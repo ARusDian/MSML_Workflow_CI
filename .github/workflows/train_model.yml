@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - 'Workflow_CI/MLProject_HeartFail/**'
+      - 'MLProject_HeartFail/**'
       - '.github/workflows/**'
 
 jobs:
@@ -34,8 +34,7 @@ jobs:
 
       - name: 🚀 Run MLflow Project
         working-directory: ./MLProject_HeartFail
-        run: |
-          mlflow run . --experiment-name "CI_HeartFail_XGB"
+        run: mlflow run . --experiment-name "CI_HeartFail_XGB"
 
       - name: 📦 Upload training artifacts
         uses: actions/upload-artifact@v4
