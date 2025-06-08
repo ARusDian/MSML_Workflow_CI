@@ -1,0 +1,7 @@
+name: heartfail-mlflow-project
+
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    command: "python modelling_CI.py"
