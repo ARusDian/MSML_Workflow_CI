@@ -1,0 +1,26 @@
+# Gunakan base image Miniconda
+FROM continuumio/miniconda3:latest
+
+# Set working directory
+WORKDIR /app
+
+# Salin file environment
+COPY conda.yaml .
+
+# Buat environment Conda dari file
+RUN conda env create -f conda.yaml
+
+# Aktifkan conda env & pastikan path benar
+SHELL ["conda", "run", "-n", "heart-model-env", "/bin/bash", "-c"]
+
+# Salin semua file ke /app
+COPY . .
+
+# OPTIONAL: Salin file model (kalau belum include saat COPY . .)
+COPY model.pkl /app/model.pkl
+
+# Jalankan Prometheus metrics + FastAPI (pakai uvicorn langsung)
+EXPOSE 5001
+EXPOSE 8000
+
+CMD ["conda", "run", "--no-capture-output", "-n", "heart-model-env", "uvicorn", "app_serving:app", "--host", "0.0.0.0", "--port", "5001"]

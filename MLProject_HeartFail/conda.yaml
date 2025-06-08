@@ -1,0 +1,20 @@
+name: heart-model-env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - xgboost==1.7.6
+      - scikit-learn==1.2.2
+      - scikit-optimize==0.9.0
+      - mlflow==2.11.3
+      - joblib==1.2.0
+      - pandas==1.5.3
+      - matplotlib==3.7.1
+      - seaborn==0.12.2
+      - fastapi
+      - uvicorn
+      - prometheus-client
+      - numpy
