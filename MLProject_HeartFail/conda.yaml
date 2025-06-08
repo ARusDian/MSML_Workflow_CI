@@ -17,4 +17,4 @@ dependencies:
       - fastapi
       - uvicorn
       - prometheus-client
-      - numpy
+      - numpy==1.23.5
