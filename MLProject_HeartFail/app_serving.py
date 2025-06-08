@@ -78,7 +78,7 @@ except Exception as e:
 
 # -------------------- PROMETHEUS METRICS SERVER --------------------
 try:
-    start_http_server(8000)
+    start_http_server(8000, addr="0.0.0.0")
     print("✅ Prometheus metrics aktif di :8000/metrics")
 except Exception as e:
     print(f"❌ Gagal start Prometheus: {e}")
