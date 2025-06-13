@@ -61,7 +61,7 @@ opt = BayesSearchCV(
 
 os.makedirs("plots", exist_ok=True)
 
-with mlflow.start_run(run_name="CI_Bayes_XGBoost"):
+with mlflow.start_run(run_name="CI_Bayes_XGBoost", nested=True):
     opt.fit(X_train, y_train)
     best_model = opt.best_estimator_
 
