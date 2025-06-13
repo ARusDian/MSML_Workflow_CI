@@ -2,7 +2,6 @@ import os
 import shutil
 import joblib
 import mlflow
-import mlflow.sklearn
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -10,6 +9,7 @@ from xgboost import XGBClassifier
 from skopt import BayesSearchCV
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.model_selection import StratifiedKFold
+import tempfile
 
 # === Bersihkan mlruns lokal yang mungkin korup (CI-safe) ===
 mlruns_path = "/tmp/mlruns"
@@ -75,8 +75,11 @@ with mlflow.start_run(run_name="CI_Bayes_XGBoost", nested=True):
     mlflow.log_metric("precision_1", report["1"]["precision"])
     mlflow.log_metric("recall_1", report["1"]["recall"])
 
-    mlflow.sklearn.log_model(best_model, artifact_path="model")
-    joblib.dump(best_model, "model.pkl")
+    # === FIXED: Log model manually instead of log_model (to avoid DagsHub API error)
+    model_dir = tempfile.mkdtemp()
+    model_path = os.path.join(model_dir, "model.pkl")
+    joblib.dump(best_model, model_path)
+    mlflow.log_artifact(model_path, artifact_path="model")
 
     # === Confusion Matrix
     cm = confusion_matrix(y_test, y_pred)
