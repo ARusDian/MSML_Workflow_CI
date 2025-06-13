@@ -1,4 +1,5 @@
 import os
+import shutil
 import joblib
 import mlflow
 import mlflow.sklearn
@@ -9,6 +10,11 @@ from xgboost import XGBClassifier
 from skopt import BayesSearchCV
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.model_selection import StratifiedKFold
+
+# === Bersihkan mlruns lokal yang mungkin korup (CI-safe) ===
+mlruns_path = "/tmp/mlruns"
+if os.path.exists(mlruns_path):
+    shutil.rmtree(mlruns_path)
 
 # === Konfigurasi MLflow ===
 mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI", "file:///tmp/mlruns"))
