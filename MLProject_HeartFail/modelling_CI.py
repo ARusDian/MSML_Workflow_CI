@@ -18,6 +18,13 @@ mlflow.set_experiment("CI_HeartFail_XGB")
 train_df = pd.read_csv("preprocessing_datasets/train.csv")
 test_df = pd.read_csv("preprocessing_datasets/test.csv")
 
+assert (
+    "HeartDisease" in train_df.columns
+), "Kolom 'HeartDisease' tidak ditemukan di train.csv"
+assert (
+    "HeartDisease" in test_df.columns
+), "Kolom 'HeartDisease' tidak ditemukan di test.csv"
+
 X_train = train_df.drop(columns="HeartDisease")
 y_train = train_df["HeartDisease"]
 X_test = test_df.drop(columns="HeartDisease")
@@ -46,6 +53,8 @@ opt = BayesSearchCV(
     random_state=42,
 )
 
+os.makedirs("plots", exist_ok=True)
+
 with mlflow.start_run(run_name="CI_Bayes_XGBoost"):
     opt.fit(X_train, y_train)
     best_model = opt.best_estimator_
@@ -70,7 +79,7 @@ with mlflow.start_run(run_name="CI_Bayes_XGBoost"):
     plt.title("Confusion Matrix")
     plt.xlabel("Predicted")
     plt.ylabel("Actual")
-    cm_path = "confusion_matrix.png"
+    cm_path = "plots/confusion_matrix.png"
     plt.savefig(cm_path)
     mlflow.log_artifact(cm_path)
     plt.close()
@@ -86,7 +95,7 @@ with mlflow.start_run(run_name="CI_Bayes_XGBoost"):
     sns.barplot(x=fi_series[:15], y=fi_series[:15].index)
     plt.title("Top 15 Feature Importances")
     plt.xlabel("Importance")
-    fi_path = "feature_importance.png"
+    fi_path = "plots/feature_importance.png"
     plt.tight_layout()
     plt.savefig(fi_path)
     mlflow.log_artifact(fi_path)
