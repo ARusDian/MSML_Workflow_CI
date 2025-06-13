@@ -13,11 +13,11 @@ RUN conda env create -f conda.yaml
 # Aktifkan conda env & pastikan path benar
 SHELL ["conda", "run", "-n", "heart-model-env", "/bin/bash", "-c"]
 
-# Salin semua file ke /app
+# Salin semua file ke /app (termasuk model.pkl jika sudah ada)
 COPY . .
 
-# OPTIONAL: Salin file model (kalau belum include saat COPY . .)
-COPY model.pkl /app/model.pkl
+# (Hapus baris ini — sudah tercakup di atas)
+# COPY model.pkl /app/model.pkl
 
 # Jalankan Prometheus metrics + FastAPI (pakai uvicorn langsung)
 EXPOSE 5001
