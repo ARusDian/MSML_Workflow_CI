@@ -17,7 +17,7 @@ if os.path.exists(mlruns_path):
     shutil.rmtree(mlruns_path)
 
 # === Konfigurasi MLflow ===
-mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI", "file:///tmp/mlruns"))
+mlflow.set_tracking_uri("https://dagshub.com/ARusDian/MSML_dicoding.mlflow")
 mlflow.set_experiment("CI_HeartFail_XGB")
 
 # === Load CSV Dataset ===
